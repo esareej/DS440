@@ -1,0 +1,8 @@
+Dockerfile 
+README.md
+*.pyc
+*.pyo
+__pychache__
+.pytest_cache
+tempCodeRunnerFile.py
+fake_files_sample.py
