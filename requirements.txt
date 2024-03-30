@@ -4,5 +4,5 @@ matplotlib==3.8.2
 numpy==1.26.4
 opencv_python==4.9.0.80
 scikit_learn==1.4.1.post1
-skimage==0.0
+scikit-image==0.18.3
 Werkzeug==3.0.1
