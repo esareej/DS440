@@ -4,7 +4,6 @@ README.md
 *.pyo
 __pycache__
 .pytest_cache
-tempCodeRunnerFile.py
 fake_files_sample.py
 deepfake_detection_model2.joblib
 model_train.py
