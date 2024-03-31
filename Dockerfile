@@ -10,9 +10,15 @@ ENV APP_HOME /app
 WORKDIR $APP_HOME
 COPY . ./
 
+# Install Python virtual environment
+RUN python3 -m venv /venv
+
+# Activate the virtual environment
+ENV PATH="/venv/bin:$PATH"
+
 #Install production dependencies.
-RUN pip install --upgrade setuptools
-RUN pip install -r requirements.txt
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 RUN pip install gunicorn
 
 #Run the web service on container startup. Here we use the gunicorn
