@@ -1,6 +1,6 @@
 #Use the official lightweight Python image.
 #https://hub.docker.com/_/python
-FROM python:3
+FROM python:3.12
 
 #Allow statements and log messages to immediately appear in the Knative logs
 ENV PYTHONUNBUFFERED True
@@ -11,6 +11,7 @@ WORKDIR $APP_HOME
 COPY . ./
 
 #Install production dependencies.
+RUN pip install --upgrade setuptools
 RUN pip install -r requirements.txt
 RUN pip install gunicorn
 
