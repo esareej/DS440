@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deepfake Detection Results</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div id="mySidenav" class="sidenav">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="upload.html">Detect Deepfake</a>
+        <a href="about_us.html">About Us</a>
+        <a href="contact_us.html">Contact Us</a>
+        <a href="terms_of_service.html">Terms of Service</a>
+        <a href="privacy_policy.html">Privacy Policy</a>
+    </div>
+
+    <span class="menu-icon" onclick="openNav()">&#9776;</span>
+
+    <div id="myOverlay" class="overlay" onclick="closeNav()"></div>
+
+    <div class="header">
+        <h1 class="lobster-regular"><a href="upload.html">Deepfake Detector.</a></h1>
+    </div>
+
+    <div class="main-container">
+        <h1>Deepfake Detector Results</h1>
+        <div class="content">
+            <div class="media-section">
+                <img src="uploaded_media.jpg" alt="Uploaded Media" class="uploaded-media">
+                <div class="media-info">
+                    <h2>Uploaded Media</h2>
+                </div>
+            </div>
+
+            <div class="result-section">
+                <div class="result-grid">
+                    <div class="result-item">
+                        <span class="result-title">Uncertainty Score</span>
+                        <span id="score" class="result-value">Calculating...</span>
+                    </div>
+                </div>
+                <div id="final-result" class="final-result">
+                    Final Result: <span id="final-result-value" class="result-value">Pending</span>
+                </div>
+            </div>
+        </div>
+        <div class="back-button-container">
+            <button id="back-button">Back to Main</button>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="footer-item">
+            <span class="brand-name">Deepfake Detector</span>
+        </div>
+        <div class="footer-item">
+            <a href="about_us.html">About Us</a>
+        </div>
+        <div class="footer-item">
+            <a href="contact_us.html">Contact Us</a>
+        </div>
+        <div class="footer-item">
+            <a href="terms_of_service.html">Terms of Service</a>
+        </div>
+        <div class="footer-item">
+            <a href="privacy_policy.html">Privacy Policy</a>
+        </div>
+        <div class="footer-item">
+            <a>108 Waring Hall, University Park, PA 16802</a>
+        </div>
+        <div class="footer-item">
+            <a>© 2024 Deepfake Detector, Inc.</a>
+        </div>
+    </div>
+
+    <script src="/static/result.js"></script>
+
+    <script src="/static/result.js"></script>
+    <script>
+        // Open and close side navigation
+        function openNav() {
+            document.getElementById("mySidenav").style.width = "250px";
+            document.getElementById("myOverlay").style.display = "block";
+        }
+
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+            document.getElementById("myOverlay").style.display = "none";
+        }
+    </script>
+</body>
+</html>
