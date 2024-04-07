@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deepfake Detection Results</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='results-style.css') }}">
+</head>
+<body>
+    <div class="top-color-bar">
+        <h1 class="lobster-regular"><a href="{{ url_for('upload') }}">Deepfake Detector.</a></h1>
+    </div>
+    
+    <div class="sidenav">
+        <a href="{{ url_for('upload') }}"><i class="fas fa-th"></i> Dashboard</a>
+        <a href="{{ url_for('about_us') }}"><i class="fas fa-info-circle"></i> About Us</a>
+        <a href="{{ url_for('contact_us') }}"><i class="fas fa-envelope"></i> Contact Us</a>
+        <a href="{{ url_for('terms_of_service') }}"><i class="fas fa-file-contract"></i> Terms of Service</a>
+        <a href="{{ url_for('privacy_policy') }}"><i class="fas fa-shield-alt"></i> Privacy Policy</a>
+    </div>
+
+    <div class="main-container">
+        <h1>Deepfake Detector Results</h1>
+        <div class="content">
+            <div class="result-section">
+                <div class="result-grid">
+                    <div class="result-item">
+                        <span class="result-title">Prediction</span>
+                        <span class="result-value">{{ result }}</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-title">Confidence Score</span>
+                        <span class="result-value">{{ confidence }}</span>
+                    </div>
+                </div>
+            </div>
+            <div class="visualization-section">
+                <h2>Feature Visualizations</h2>
+                <div class="visualization-grid">
+                    <div class="visualization-item">
+                        <img src="{{ url_for('static', filename='texture_features.png') }}" alt="Texture Visualization">
+                        <span class="visualization-title">Texture Features</span>
+                    </div>
+                    <div class="visualization-item">
+                        <img src="{{ url_for('static', filename='frequency_features.png') }}" alt="Frequency Visualization">
+                        <span class="visualization-title">Frequency Features</span>
+                    </div>
+                    <div class="visualization-item">
+                        <img src="{{ url_for('static', filename='lbp_visualization.png') }}" alt="LBP Visualization">
+                        <span class="visualization-title">LBP Features</span>
+                    </div>
+                    <div class="visualization-item">
+                        <img src="{{ url_for('static', filename='gabor_visualization.png') }}" alt="Gabor Visualization">
+                        <span class="visualization-title">Gabor Features</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="back-button-container">
+            <a href="{{ url_for('upload') }}" class="button">Back to Main</a>
+        </div>
+    </div>
+</body>
+</html>

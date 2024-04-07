@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deepfake Analysis</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <div class="top-color-bar">
+        <h1 class="lobster-regular"><a href="upload.html">Deepfake Detector.</a></h1>
+    </div>
+    
+    <div class="sidenav">
+        <a href="upload.html"><i class="fas fa-th"></i> Dashboard</a>
+        <a href="about_us.html"><i class="fas fa-info-circle"></i> About Us</a>
+        <a href="contact_us.html"><i class="fas fa-envelope"></i> Contact Us</a>
+        <a href="terms_of_service.html"><i class="fas fa-file-contract"></i> Terms of Service</a>
+        <a href="privacy_policy.html"><i class="fas fa-shield-alt"></i> Privacy Policy</a>
+    </div>
+
+    <div class="header">
+        <h1 class="lobster-regular"><a href="upload.html">Deepfake Detector.</a></h1>
+    </div>
+
+    <div class="main-container-analyze">
+        <h1>Deepfake Analysis in Progress...</h1>
+        <div class="content">
+            <div class="graph-container">
+                <h2>Multi-attentional Analysis</h2>
+                <canvas id="multiAttentionalAnalysisChart"></canvas>
+            </div>
+
+            <div class="graph-container">
+                <h2>Frequency Domain Analysis</h2>
+                <canvas id="frequencyDomainAnalysisChart"></canvas>
+            </div>
+
+            <div class="progress-container">
+                <div id="progress-bar"></div>
+            </div>
+            <span id="percentage">0%</span>
+            <div id="button-container"></div>
+        </div>
+    </div>
+    <script src="/static/analyze.js"></script>
+</body>
+</html>
