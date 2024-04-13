@@ -1,7 +1,9 @@
+from joblib import load
 import cv2
 import os
 import numpy as np
 import matplotlib.pyplot as plt
+plt.switch_backend('Agg')
 from skimage.feature import local_binary_pattern
 
 def analyze_and_visualize_texture(frame, visualize=False):
@@ -34,7 +36,8 @@ def analyze_and_visualize_texture(frame, visualize=False):
         plt.title('Textural Features (Edges)')
         plt.axis('off')
         
-        plt.show()
+        plt.savefig('static/graphs/texture_features.png')
+        plt.close()
     
     # Returning the textural features for further processing or classification
     return sobel_normalized
@@ -65,8 +68,8 @@ def analyze_and_visualize_frequency(frame, visualize=False):
         plt.title('Frequency Domain')
         plt.axis('off')
         
-        plt.show()
-    
+        plt.savefig('static/graphs/frequency_features.png')  # Save the plot as an image
+        plt.close()
     # Returning the frequency analysis for further processing or classification
     return magnitude_spectrum
 
@@ -80,11 +83,14 @@ def analyze_lbp_features(frame, visualize=False, P=8, R=1):
     hist = hist.astype("float")
     hist /= (hist.sum() + 1e-7)
     if visualize:
-        plt.figure(figsize=(10, 2))
-        plt.subplot(1, 3, 3)
+        plt.figure(figsize=(5, 5))
         plt.plot(hist)
         plt.title('LBP Features')
-        plt.show()
+        plt.xlabel('Bins')
+        plt.ylabel('Normalized Frequency')
+        plt.tight_layout()
+        plt.savefig('static/graphs/lbp_features.png')  # Save the plot as an image
+        plt.close()  # Close the plot to free up memory
     return hist
 
 def analyze_gabor_features(frame, visualize=False, num=4):
@@ -92,17 +98,22 @@ def analyze_gabor_features(frame, visualize=False, num=4):
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
     # Define Gabor filter parameters
     vecs = []
+    filtered_images = []
     for theta in np.arange(0, np.pi, np.pi / num):
         gabor_kernel = cv2.getGaborKernel((21, 21), 8, theta, 10, 0.5, 0, ktype=cv2.CV_32F)
         filtered = cv2.filter2D(gray, -1, gabor_kernel)
         vecs.append(np.mean(filtered))
         vecs.append(np.std(filtered))
+        filtered_images.append(filtered)
     if visualize:
-        plt.figure(figsize=(10, 2))
-        plt.subplot(1, 3, 2)
-        plt.imshow(filtered, cmap='gray')
-        plt.title('Gabor Filter Output')
-        plt.show()
+        fig, axes = plt.subplots(1, num, figsize=(20, 5))
+        for i, img in enumerate(filtered_images):
+            axes[i].imshow(img, cmap='gray')
+            axes[i].set_title(f'Gabor Filter {i+1}')
+            axes[i].axis('off')
+        plt.tight_layout()
+        plt.savefig('static/graphs/gabor_features.png')  # Save the plot as an image
+        plt.close()  # Close the plot to free up memory
     return vecs
 
 def extract_frames_from_folders(base_folder='data', analyze_texture=True, analyze_frequency=True, analyze_lbp=True, analyze_gabor=True, max_frames=15):
@@ -272,3 +283,80 @@ def predict_with_uncertainty(clf, X_test, low_threshold=0.4, high_threshold=0.6)
             y_pred_modified.append(proba.argmax())
     
     return y_pred_modified
+
+def process_video(video_path):
+    # Load the saved model
+    clf = load('deepfake_detection_model.joblib')
+
+    # Extract face frames from the video
+    face_frames = extract_face_frames(video_path, max_frames=15)
+
+    # Check if any face frames were extracted
+    if not face_frames:
+        return "no_face", None
+
+    # Select a specific frame to visualize its features
+    selected_frame = face_frames[0]  # Choose the first frame, you can modify this as needed
+
+    # Analyze and visualize features for the selected frame
+    analyze_and_visualize_texture(selected_frame, visualize=True)
+    
+    analyze_and_visualize_frequency(selected_frame, visualize=True)
+    
+    analyze_lbp_features(selected_frame, visualize=True)
+
+    analyze_gabor_features(selected_frame, visualize=True)
+
+
+    # Initialize lists to store features
+    texture_features = []
+    frequency_features = []
+    lbp_features = []
+    gabor_features = []
+
+    # Analyze and extract features from each face frame
+    for frame in face_frames:
+        texture_feature = analyze_and_visualize_texture(frame, visualize=False)
+        texture_features.append(texture_feature)
+
+        frequency_feature = analyze_and_visualize_frequency(frame, visualize=False)
+        frequency_features.append(frequency_feature)
+
+        lbp_feature = analyze_lbp_features(frame, visualize=False)
+        lbp_features.append(lbp_feature)
+
+        gabor_feature = analyze_gabor_features(frame, visualize=False)
+        gabor_features.append(gabor_feature)
+
+    # Create a data dictionary with the extracted features
+    data = {
+        'video': [
+            {
+                'texture_features': texture_features,
+                'frequency_features': frequency_features,
+                'lbp_features': lbp_features,
+                'gabor_features': gabor_features
+            }
+        ]
+    }
+
+    # Aggregate the features
+    aggregated_features, _ = aggregate_features(data)
+
+    # Make predictions with uncertainty
+    predictions = predict_with_uncertainty(clf, aggregated_features)
+
+    # Determine the final prediction based on the majority
+    final_prediction = max(set(predictions), key=predictions.count)
+
+    if final_prediction == 0:
+        result = 'fake'
+    elif final_prediction == 1:
+        result = 'real'
+    else:
+        result = 'unsure'
+
+    # Calculate confidence
+    confidence = clf.predict_proba(aggregated_features).max()
+    print(f"Confidence: {confidence}")
+    return result, confidence
